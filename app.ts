@@ -1,8 +1,9 @@
 import { Category } from './enums';
-import { Book, Logger, Author, Librarian } from './interfaces';
+import { Book, Logger, Author, Librarian, Magazine } from './interfaces';
 import { UniversityLibrarian, ReferenceItem } from './classes';
-import { CalculateLateFee as CalcFee, MaxBooksAllowed } from './lib/utilityFunctions';
+import { CalculateLateFee as CalcFee, MaxBooksAllowed, Purge } from './lib/utilityFunctions';
 import RefBook from './encyclopedia';
+import Shelf from './shelf';
 
 let calc = CalcFee(5);
 let max = MaxBooksAllowed(50);
@@ -129,20 +130,59 @@ function PrintBook(book: Book): void {
 
 /***********************************************************/
 
-let Newspaper = class extends ReferenceItem {
-	printCitation(): void {
-		console.log(`Newspaper: ${this.title}`);
-	}
-}
+let inventory: Array<Book> = [
+    { id: 10, title: 'The C Programming Language', author: 'K & R', available: true, category: Category.Software },
+    { id: 11, title: 'Code Complete', author: 'Steve McConnell', available: true, category: Category.Software },
+    { id: 12, title: '8-Bit Graphics with Cobol', author: 'A. B.', available: true, category: Category.Software },
+    { id: 13, title: 'Cool autoexec.bat Scripts!', author: 'C. D.', available: true, category: Category.Software }
+];
 
-let myPaper = new Newspaper('The Gazette', 2016);
-myPaper.printCitation();
+let bookShelf: Shelf<Book> = new Shelf<Book>();
 
-class Novel extends class { title: string } {
-	mainCharacter: string;
-}
+inventory.forEach(book => bookShelf.add(book));
 
-let favoriteNovel = new Novel();
+let firstBook: Book = bookShelf.getFirst();
+
+let magazines: Array<Magazine> = [
+    { title: 'Programming Language Monthly', publisher: 'Code Mags' },
+    { title: 'Literary Fiction Quarterly', publisher: 'College Press' },
+    { title: 'Five Points', publisher: 'GSU' }
+];
+
+let magazineShelf: Shelf<Magazine> = new Shelf<Magazine>();
+
+magazines.forEach(mag => magazineShelf.add(mag));
+
+let firstMagazine: Magazine = magazineShelf.getFirst();
+
+// let numberShelf: Shelf<number> = new Shelf<number>();
+// [5, 10, 15].forEach(num => numberShelf.add(num));
+
+magazineShelf.printTitles();
+
+let softwareBook: Book = bookShelf.find('Code Complete');
+console.log(`${softwareBook.title} (${softwareBook.author})`);
+
+// let purgeBooks: Array<Book> = Purge<Book>(inventory);
+// purgeBooks.forEach(book => console.log(book.title));
+
+// let purgeNums: Array<number> = Purge<number>([1 ,2 ,3 ,4, 5]);
+// console.log(purgeNums); 
+
+// let Newspaper = class extends ReferenceItem {
+// 	printCitation(): void {
+// 		console.log(`Newspaper: ${this.title}`);
+// 	}
+// }
+
+// let myPaper = new Newspaper('The Gazette', 2016);
+// myPaper.printCitation();
+
+// class Novel extends class { title: string } {
+// 	mainCharacter: string;
+// }
+
+// let favoriteNovel = new Novel();
 
 // let ref: ReferenceItem = new Encyclopedia('Alex', 1966, 1);
 // ref.printItem();
