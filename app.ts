@@ -1,6 +1,6 @@
 import { Category } from './enums';
 import { Book, DamageLogger, Author, Librarian } from './interfaces';
-import { UniversityLibrarian } from './classes';
+import { UniversityLibrarian, ReferenceItem, Encyclopedia } from './classes';
 
 function GetAllBooks(): Book[] {
 	
@@ -122,9 +122,31 @@ function PrintBook(book: Book): void {
 
 /***********************************************************/
 
-let favoriteLibrarian: Librarian = new UniversityLibrarian();
-favoriteLibrarian.name = 'Sharon';
-favoriteLibrarian.assistCustomer('Lynda');
+let Newspaper = class extends ReferenceItem {
+	printCitation(): void {
+		console.log(`Newspaper: ${this.title}`);
+	}
+}
+
+let myPaper = new Newspaper('The Gazette', 2016);
+myPaper.printCitation();
+
+class Novel extends class { title: string } {
+	mainCharacter: string;
+}
+
+let favoriteNovel = new Novel();
+
+// let ref: ReferenceItem = new Encyclopedia('Alex', 1966, 1);
+// ref.printItem();
+// ref.printCitation();
+
+// let ref: ReferenceItem = new ReferenceItem('Alex', 1966);
+// ref.printItem();
+
+// let favoriteLibrarian: Librarian = new UniversityLibrarian();
+// favoriteLibrarian.name = 'Sharon';
+// favoriteLibrarian.assistCustomer('Lynda');
 
 // let myBook: Book = {
 //     id: 5,
